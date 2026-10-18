@@ -1,3 +1,6 @@
+# Clang files:
+.clangd
+
 # Prerequisites
 *.d
 
