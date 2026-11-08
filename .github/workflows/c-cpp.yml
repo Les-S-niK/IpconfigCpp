@@ -23,8 +23,14 @@ jobs:
       - name: Conan detect profile
         run: conan profile detect
       - name: Conan install dependencies
+        env:
+          CC: gcc-14
+          CXX: g++-14
         run: conan install . --build=missing -s compiler.version=14 -s compiler.cppstd=23
       - name: Conan build
+        env:
+          CC: gcc-14
+          CXX: g++-14
         run: conan build -s compiler.version=14 -s compiler.cppstd=23
 
       - name: Configure
