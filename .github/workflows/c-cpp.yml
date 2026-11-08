@@ -20,7 +20,7 @@ jobs:
         cmake \
         clang++ \
         build-essential \
-        python
+        python3
     - name: Install conan
       run: pip install --user conan
       
