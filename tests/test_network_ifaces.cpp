@@ -52,6 +52,7 @@ TEST_F(SysNetIfacesFixture, getIfacesContainsLoopbackInterface) {
 TEST_F(SysNetIfacesFixture, getPrAddLoopbackEqualsLoPrAddr) {
     SysNetIfaces::ifaces ifaces = net_ifaces->getIfaces();
     for (const auto& iface : ifaces) {
+        ASSERT_FALSE(iface.getPrAddr().empty());
         if (iface.getName() == loopback_iface_name) {
             ASSERT_EQ(iface.getPrAddr(), loopback_praddr);
             GTEST_SUCCEED();
@@ -64,6 +65,7 @@ TEST_F(SysNetIfacesFixture, getHwAddLoopbackEqualsLoHwAddr) {
     SysNetIfaces::ifaces ifaces = net_ifaces->getIfaces();
     for (const auto& iface : ifaces) {
         if (iface.getName() == loopback_iface_name) {
+            ASSERT_FALSE(iface.getHwAddr().empty());
             ASSERT_EQ(iface.getHwAddr(), loopback_hwaddr);
             GTEST_SUCCEED();
         }
