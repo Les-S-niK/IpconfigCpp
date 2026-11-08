@@ -25,7 +25,7 @@ jobs:
       - name: Conan install dependencies
         run: conan install . --build=missing -s compiler.cppstd=23
       - name: Conan build
-        run: conan build
+        run: conan build -s compiler.cppstd=23
 
       - name: Configure
         run: cmake -S . -B build -DTESTS=ON
