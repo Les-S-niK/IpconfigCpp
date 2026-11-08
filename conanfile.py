@@ -5,7 +5,7 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 from conan.tools.files import load
 
 
-class mypkgRecipe(ConanFile):
+class IpconfigCpp(ConanFile):
     name = "CpconfigCpp"
     package_type = "application"
 
@@ -22,13 +22,16 @@ class mypkgRecipe(ConanFile):
     # Sources are located in the same place as this recipe, copy them to the recipe
     exports_sources = "CMakeLists.txt", "src/*"
 
+    options = {"tests": [True, False]}
+    default_options = {"tests": False}
+
     def set_version(self) -> None:
         VERSION_FILE_NAME: str = "VERSION"
         version_file_path: str = path.join(self.recipe_folder, VERSION_FILE_NAME)
         self.version = load(self, version_file_path)
 
     def requirements(self) -> None:
-        self.require("gtest/1.18.0")
+        self.requires("gtest/1.18.0")
 
     def layout(self):
         cmake_layout(self)
@@ -41,7 +44,7 @@ class mypkgRecipe(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure()
+        cmake.configure(variables={"TESTS": self.options.tests})
         cmake.build()
 
     def package(self):
