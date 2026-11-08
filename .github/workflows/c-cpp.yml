@@ -24,6 +24,8 @@ jobs:
         run: conan profile detect
       - name: Conan install dependencies
         run: conan install . --build=missing
+      - name: Conan build
+        run: conan build
 
       - name: Configure
         run: cmake -S . -B build -DTESTS=ON
