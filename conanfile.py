@@ -44,7 +44,7 @@ class IpconfigCpp(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(variables={"TESTS": self.options.get("tests")})
+        cmake.configure(variables={"TESTS": self.options.tests})
         cmake.build()
 
     def package(self):
