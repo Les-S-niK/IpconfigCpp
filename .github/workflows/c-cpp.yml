@@ -13,19 +13,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install system dependencies
+      - name: Install dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y cmake build-essential clang
-
+          sudo apt-get install -y cmake build-essential gcc-14 g++-14
+    
       - name: Install Conan
         run: pipx install conan
       - name: Conan detect profile
         run: conan profile detect
       - name: Conan install dependencies
-        run: conan install . --build=missing -s compiler.cppstd=23
+        run: conan install . --build=missing -s compiler.version=14 -s compiler.cppstd=23
       - name: Conan build
-        run: conan build -s compiler.cppstd=23
+        run: conan build -s compiler.version=14 -s compiler.cppstd=23
 
       - name: Configure
         run: cmake -S . -B build -DTESTS=ON
