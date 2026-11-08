@@ -12,15 +12,11 @@ if(TESTS)
   find_package(GTest)
   enable_testing()
   include(GoogleTest)
-  add_executable(IpconfigTests ./tests/)
+  add_executable(IpconfigTests ./tests/test_network_ifaces.cpp)
   target_include_directories(IpconfigTests PUBLIC ./include/)
   target_link_libraries(IpconfigTests PRIVATE GTest::gtest GTest::gtest_main)
   add_test(NAME IpconfigTests COMMAND IpconfigTests)
 else()
   add_executable(${PROJECT_NAME} main.cpp)
-
-  target_include_directories(
-    ${PROJECT_NAME}
-    PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-           $<INSTALL_INTERFACE:include>)
+  target_include_directories(${PROJECT_NAME} PUBLIC ./include/)
 endif()
