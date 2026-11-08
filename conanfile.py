@@ -22,6 +22,9 @@ class IpconfigCpp(ConanFile):
     # Sources are located in the same place as this recipe, copy them to the recipe
     exports_sources = "CMakeLists.txt", "src/*"
 
+    options = {"tests": [True, False]}
+    default_options = {"tests": False}
+
     def set_version(self) -> None:
         VERSION_FILE_NAME: str = "VERSION"
         version_file_path: str = path.join(self.recipe_folder, VERSION_FILE_NAME)
@@ -41,7 +44,7 @@ class IpconfigCpp(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure()
+        cmake.configure(variables={"TESTS": self.options.get("tests")})
         cmake.build()
 
     def package(self):
