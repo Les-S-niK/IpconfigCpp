@@ -20,7 +20,8 @@ jobs:
 
       - name: Install Conan
         run: pipx install conan
-
+      - name: Conan detect profile
+        run: conan profile detect
       - name: Conan install dependencies
         run: conan install . --build=missing
 
