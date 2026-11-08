@@ -32,9 +32,8 @@ auto SysNetIfaces::ifacesToVector(struct if_nameindex* sys_net_ifaces) noexcept
     ifaces_vector.reserve(ifaces_size_to_reserve);
 
     while (sys_net_ifaces->if_name != nullptr) {
-        ifaces_vector.emplace_back(
-            SysNetIface{.index = sys_net_ifaces->if_index,
-                        .name = sys_net_ifaces->if_name});
+        ifaces_vector.emplace_back(sys_net_ifaces->if_index,
+                                   sys_net_ifaces->if_name);
         std::advance(sys_net_ifaces, 1);
     }
 
@@ -49,5 +48,18 @@ auto SysNetIfaces::ifacesToVector(struct if_nameindex* sys_net_ifaces) noexcept
     -> const ifaces& {
     return _net_ifaces;
 }
+
+constexpr SysNetIface::SysNetIface(uint32_t index, std::string&& name) noexcept
+    : _index(index), _name(std::move(name)) {}
+
+[[nodiscard]] auto SysNetIface::getIndex() const noexcept -> uint32_t {
+    return _index;
+}
+
+[[nodiscard]] auto SysNetIface::getName() const noexcept -> std::string {
+    return _name;
+}
+[[nodiscard]] auto SysNetIface::getPrAddr() const noexcept -> praddr {}
+[[nodiscard]] auto SysNetIface::getHwAddr() const noexcept -> hwaddr {}
 
 }  // namespace sys_net_ifaces

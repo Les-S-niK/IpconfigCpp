@@ -4,6 +4,7 @@
 
 #include <net/if.h>
 
+#include <array>
 #include <cstdint>
 #include <expected>
 #include <string>
@@ -11,9 +12,24 @@
 
 namespace sys_net_ifaces {
 
-struct SysNetIface {
-    uint32_t index;
-    std::string name;
+class SysNetIface {
+   public:
+    static constexpr uint8_t praddr_size = 4;
+    static constexpr uint8_t hwaddr_size = 6;
+    using praddr = std::array<uint8_t, praddr_size>;
+    using hwaddr = std::array<uint8_t, hwaddr_size>;
+
+    constexpr SysNetIface(uint32_t index, std::string&& name) noexcept;
+
+    [[nodiscard]] auto getIndex() const noexcept -> uint32_t;
+    [[nodiscard]] auto getName() const noexcept -> std::string;
+    [[nodiscard]] auto getPrAddr() const noexcept -> praddr;
+    [[nodiscard]] auto getHwAddr() const noexcept -> hwaddr;
+    [[nodiscard]] auto getFlags() const noexcept -> uint32_t;
+
+   private:
+    uint32_t _index;
+    std::string _name;
 };
 
 class SysNetIfaces {

@@ -3,6 +3,7 @@
 #include <net/if.h>
 
 #include <algorithm>
+#include <array>
 #include <expected>
 #include <string_view>
 
@@ -12,13 +13,18 @@ using sys_net_ifaces::SysNetIface;
 using sys_net_ifaces::SysNetIfaces;
 
 namespace {
+constexpr std::string_view loopback_iface_name = "lo";
+constexpr SysNetIface::praddr loopback_praddr = {127, 0, 0, 1};
+constexpr SysNetIface::hwaddr loopback_hwaddr = {0xFF, 0xFF, 0xFF,
+                                                 0xFF, 0xFF, 0xFF};
+
 namespace test_utils {
+
 auto isLoopbackIfaceInIfaces(SysNetIfaces::ifaces&& ifaces) -> bool {
-    constexpr std::string_view loopback_iface_name = "lo";
-    return std::ranges::any_of(std::move(ifaces),
-                               [&](const SysNetIface& iface) -> bool {
-                                   return iface.name == loopback_iface_name;
-                               });
+    return std::ranges::any_of(
+        std::move(ifaces), [&](const SysNetIface& iface) -> bool {
+            return iface.getName() == loopback_iface_name;
+        });
 }
 }  // namespace test_utils
 
@@ -41,5 +47,27 @@ TEST_F(SysNetIfacesFixture, createSysNetIfacesReturnClassInstance) {
 TEST_F(SysNetIfacesFixture, getIfacesContainsLoopbackInterface) {
     SysNetIfaces::ifaces ifaces = net_ifaces->getIfaces();
     ASSERT_TRUE(test_utils::isLoopbackIfaceInIfaces(std::move(ifaces)));
+}
+
+TEST_F(SysNetIfacesFixture, getPrAddLoopbackEqualsLoPrAddr) {
+    SysNetIfaces::ifaces ifaces = net_ifaces->getIfaces();
+    for (const auto& iface : ifaces) {
+        if (iface.getName() == loopback_iface_name) {
+            ASSERT_EQ(iface.getPrAddr(), loopback_praddr);
+            GTEST_SUCCEED();
+        }
+    }
+    FAIL();
+}
+
+TEST_F(SysNetIfacesFixture, getHwAddLoopbackEqualsLoHwAddr) {
+    SysNetIfaces::ifaces ifaces = net_ifaces->getIfaces();
+    for (const auto& iface : ifaces) {
+        if (iface.getName() == loopback_iface_name) {
+            ASSERT_EQ(iface.getHwAddr(), loopback_hwaddr);
+            GTEST_SUCCEED();
+        }
+    }
+    FAIL();
 }
 }  // namespace
