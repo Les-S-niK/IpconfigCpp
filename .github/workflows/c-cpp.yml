@@ -23,7 +23,7 @@ jobs:
       - name: Conan detect profile
         run: conan profile detect
       - name: Conan install dependencies
-        run: conan install . --build=missing
+        run: conan install . --build=missing -s compiler.cppstd=23
       - name: Conan build
         run: conan build
 
