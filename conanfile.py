@@ -5,7 +5,7 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 from conan.tools.files import load
 
 
-class mypkgRecipe(ConanFile):
+class IpconfigCpp(ConanFile):
     name = "CpconfigCpp"
     package_type = "application"
 
@@ -28,7 +28,7 @@ class mypkgRecipe(ConanFile):
         self.version = load(self, version_file_path)
 
     def requirements(self) -> None:
-        self.require("gtest/1.18.0")
+        self.requires("gtest/1.18.0")
 
     def layout(self):
         cmake_layout(self)
