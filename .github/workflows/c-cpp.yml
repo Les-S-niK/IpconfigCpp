@@ -35,6 +35,3 @@ jobs:
 
       - name: Run tests
         run: ctest --test-dir build/Release --output-on-failure
-
-      - name: Run tests
-        run: ctest --test-dir build --output-on-failure
